@@ -1,0 +1,50 @@
+# Ensure all text files use LF in the repository
+*.java      text eol=lf
+*.xml       text eol=lf
+*.xhtml     text eol=lf
+*.properties text eol=lf
+*.sql       text eol=lf
+*.txt       text eol=lf
+*.js        text eol=lf
+*.css       text eol=lf
+*.jrxml     text eol=lf
+*.jsf       text eol=lf
+*.yml       text eol=lf
+*.json      text eol=lf
+*.md        text eol=lf
+*.js        text eol=lf
+*.json        text eol=lf
+*.json        text eol=lf
+*.ejs        text eol=lf
+
+
+# Treat common binary files as binary to avoid line ending issues
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.bmp       binary
+*.ico       binary
+*.pdf       binary
+*.docx      binary
+*.xlsx      binary
+*.ttf       binary
+*.jar       binary
+*.bak       binary
+*.jasper    binary
+*.exe 		binary
+*.dll 		binary
+*.zip 		binary
+
+# Catch-all for unknown binary files
+*.*bin      binary
+*.exe       binary
+*.dll       binary
+#git pull
+# git config --global core.autocrlf false
+# git config --global core.eol lf
+#git ls-files --eol
+#git rm --cached -r .
+#git reset --hard
+#git add --renormalize .
+#git commit -m "Apply correct line endings based on .gitattributes"
