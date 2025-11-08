@@ -17,6 +17,13 @@ const cookieParser = require("cookie-parser");
 //app.us the cookieParser while executing it
 app.use(cookieParser("thisIsMySecret"));
 
+//sessions work these are variables corresponding the client strored ( in this case ) on the ''temp memory''
+//where in the client he will only save his sessionID in (connect.sid) variable 
+const session =  require('express-session');
+//resave is to force resaving the sessions variables
+//saveUninitialized is to force resaving the sessions variables
+
+app.use(session({secret: "thisIsTheSecret", resave: false, saveUninitialized: false}));
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,

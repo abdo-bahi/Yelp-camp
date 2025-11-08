@@ -20,7 +20,14 @@ router.get('/', async(req, res) => {
     //const {name = 'visitor'} = req.cookies;
        //signined true wile passing a secret key while using cookieParser gives us the ability to check if it was the valide (not 'false' value) sent before cookie
     const {name = 'visitor'} = req.signedCookies;
-    res.render("campgrounds/index", { camps, name });
+
+    if (req.session.count) {
+        req.session.count += 1;
+    } else {
+        req.session.count = 1;
+    }
+    const sessionCount= req.session.count;
+    res.render("campgrounds/index", { camps, name, sessionCount });
 });
 
 module.exports = router;
