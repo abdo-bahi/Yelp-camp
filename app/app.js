@@ -23,6 +23,9 @@ const session =  require('express-session');
 //resave is to force resaving the sessions variables
 //saveUninitialized is to force resaving the sessions variables
 
+// flash is a way to show an information one time like after creating an object indicating that it was succesfully created
+const flash= require('connect-flash');
+app.use(flash());
 app.use(session({secret: "thisIsTheSecret", resave: false, saveUninitialized: false}));
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useNewUrlParser: true,
@@ -86,37 +89,11 @@ app.use("/campground", campgroundRoutes);
 //   res.render("campgrounds/index", { camps });
 // });
 
-app.get("/campground/new", async (req, res) => {
-  res.render("campgrounds/new");
-});
 
-app.post(
-  "/campground",
-  catchAsync(async (req, res, next) => {
-    if (!req.body) {
-      throw new ExpressError("Invalide Attributes", 422);
-    }
-    const { title, location, image, price, description } = req.body;
-    if (!(title && location && image && price && description)) {
-      throw new ExpressError("Invalide Attributes", 422);
-    }
-    console.log(`title : ${title}\nloacation:${location}`);
-    const camp = new CampGround({
-      title: title,
-      location: location,
-      image: image,
-      price: price,
-      description: description,
-    });
-    await camp.save();
-    res.redirect(`/campground/${camp._id}`);
-  })
-);
 
-app.get("/campground/:id", async (req, res) => {
-  const camp = await CampGround.findById(req.params.id).populate("reviews");
-  res.render("campgrounds/show", { camp });
-});
+
+
+
 app.get("/campground/:id/edit", async (req, res) => {
   const camp = await CampGround.findById(req.params.id);
   res.render("campgrounds/edit", { camp });
