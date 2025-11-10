@@ -94,21 +94,7 @@ app.use("/campground", campgroundRoutes);
 
 
 
-app.get("/campground/:id/edit", async (req, res) => {
-  const camp = await CampGround.findById(req.params.id);
-  res.render("campgrounds/edit", { camp });
-});
-app.patch("/campground/:id", async (req, res) => {
-  // const { title, location, image, description } = req.body;
-  const camp = await CampGround.findById(req.params.id);
-  camp.set(req.body);
-  await camp.save();
-  res.redirect(`/campground/${camp.id}`);
-});
-app.delete("/campground/:id", async (req, res) => {
-  await CampGround.findByIdAndDelete(req.params.id);
-  res.redirect(`/campground`);
-});
+
 //the validateReview from above will check before passing
 app.post("/campground/:id/reviews", validateReview, async (req, res) => {
   const camp = await CampGround.findById(req.params.id);

@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
 });
 // flash is a way to show an information one time like after creating an object indicating that it was succesfully created
 
-module.exports = router;
+
 router.post("/", async (req, res, next) => {
   if (!req.body) {
     throw new ExpressError("Invalide Attributes", 422);
@@ -74,7 +74,23 @@ router.get("/:id", async (req, res) => {
   res.render("campgrounds/show", { camp, message: req.flash("success") });
 });
 
+router.get("/:id/edit", async (req, res) => {
+  const camp = await CampGround.findById(req.params.id);
+  res.render("campgrounds/edit", { camp });
+});
+router.patch("/:id", async (req, res) => {
+  // const { title, location, image, description } = req.body;
+  const camp = await CampGround.findById(req.params.id);
+  camp.set(req.body);
+  await camp.save();
+  res.redirect(`/campground/${camp.id}`);
+});
+router.delete("/:id", async (req, res) => {
+  await CampGround.findByIdAndDelete(req.params.id);
+  res.redirect(`/campground`);
+});
 //*******important
 // signing cookies isnt about making them a secret it's about
 //ensuring they are the same cookies sent to us in the first place
 //*/
+module.exports = router;
