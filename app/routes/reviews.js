@@ -1,6 +1,6 @@
 const express = require("express");
 const CampGround = require("../models/CampGround");
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const ExpressError = require("../utils/ExpressError");
 
 
