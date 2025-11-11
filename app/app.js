@@ -10,23 +10,33 @@ const ExpressError = require("./utils/ExpressError");
 
 const campgroundRoutes = require("./routes/campCrounds");
 const reviewRoutes = require("./routes/reviews");
-//add assets directory here : 
-app.use(express.static('public'));
+//add assets directory here :
+app.use(express.static(path.join(__dirname, "public")));
 // adding the cookies parser to work with cookier
 const cookieParser = require("cookie-parser");
 //app.us the cookieParser while executing it
 app.use(cookieParser("thisIsMySecret"));
 
 //sessions work these are variables corresponding the client strored ( in this case ) on the ''temp memory''
-//where in the client he will only save his sessionID in (connect.sid) variable 
-const session =  require('express-session');
+//where in the client he will only save his sessionID in (connect.sid) variable
+const session = require("express-session");
 //resave is to force resaving the sessions variables
 //saveUninitialized is to force resaving the sessions variables
 
 // flash is a way to show an information one time like after creating an object indicating that it was succesfully created
-const flash= require('connect-flash');
+const flash = require("connect-flash");
 app.use(flash());
-app.use(session({secret: "thisIsTheSecret", resave: false, saveUninitialized: false}));
+const confSession = {
+  secret: "thisIsAWeakSecret",
+  resave: false,
+  saveUninitialized: true,
+  // store property should be added to store in Db but not neccessery for dev
+  cookie: {
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //for a week (in ms)
+    maxAge: 1000 * 60 * 60 * 60 * 24 * 7,
+  }
+};
+app.use(session(confSession));
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -55,7 +65,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // midelware chaining we'll have this is 1st then this is 2nd then ****
 // but the chaining will be broken once a express.response is sent from one midellware
 // the triggering the path / called
@@ -81,13 +90,6 @@ app.use("/campground/:id/reviews", reviewRoutes);
 //   const camps = await CampGround.find({});
 //   res.render("campgrounds/index", { camps });
 // });
-
-
-
-
-
-
-
 
 //the last next will be used as a 404 wrong path status
 // we dont have to add a midelware with next before it
