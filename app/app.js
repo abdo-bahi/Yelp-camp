@@ -10,7 +10,8 @@ const ExpressError = require("./utils/ExpressError");
 
 const campgroundRoutes = require("./routes/campCrounds");
 const reviewRoutes = require("./routes/reviews");
-
+//add assets directory here : 
+app.use(express.static('public'));
 // adding the cookies parser to work with cookier
 const cookieParser = require("cookie-parser");
 //app.us the cookieParser while executing it

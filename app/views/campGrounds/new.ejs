@@ -33,7 +33,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                   </div>
-                  <input type="number" class="form-control" id="price" name="price" min="0"aria-label="Amount (to the nearest dollar)">
+                  <input type="number" class="form-control" id="price" name="price" min="0"aria-label="Amount (to the nearest dollar)" required>
                   <div class="input-group-append">
                     <span class="input-group-text">.00</span>
                   </div>
@@ -52,31 +52,10 @@
                 Looks good!
               </div>
               </div>
-        
               <button class="btn btn-success">Submit</button>
-        
+              <script src="/js/validateForms.js"> </script>
+
         </form>
     </div>
-    <script>
-      // Example starter JavaScript for disabling form submissions if there are invalid fields
-(function () {
-  'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.validated-form')
-
-  // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
-    </script>
 
