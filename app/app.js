@@ -32,6 +32,7 @@ const confSession = {
   saveUninitialized: true,
   // store property should be added to store in Db but not neccessery for dev
   cookie: {
+    httpOnly: true, //this additional security feature where only valde sourced cookies are accepted
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //for a week (in ms)
     maxAge: 1000 * 60 * 60 * 60 * 24 * 7,
   }
