@@ -43,6 +43,7 @@ app.use(session(confSession));
 app.use((req, res, next) => {
   // <%=message%> will be accesible now from any ejs temlplate
     res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
 });
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {

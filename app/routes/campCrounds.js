@@ -3,10 +3,6 @@ const CampGround = require("../models/CampGround");
 const router = express.Router();
 const ExpressError = require("../utils/ExpressError");
 
-
-
-
-
 // adding the cookies parser to work with cookier
 
 //we can add a router middelware to these routes as in :
@@ -38,7 +34,6 @@ router.get("/", async (req, res) => {
 });
 // flash is a way to show an information one time like after creating an object indicating that it was succesfully created
 
-
 router.post("/", async (req, res, next) => {
   if (!req.body) {
     throw new ExpressError("Invalide Attributes", 422);
@@ -61,15 +56,23 @@ router.post("/", async (req, res, next) => {
 });
 
 router.get("/new", async (req, res) => {
-    res.render("campgrounds/new");
-  });
+  res.render("campgrounds/new");
+});
 router.get("/:id", async (req, res) => {
   const camp = await CampGround.findById(req.params.id).populate("reviews");
+  if (!camp) {
+    req.flash("error", "cannot find that campground!");
+    return res.redirect("/campground");
+  }
   res.render("campgrounds/show", { camp });
 });
 
 router.get("/:id/edit", async (req, res) => {
   const camp = await CampGround.findById(req.params.id);
+  if (!camp) {
+    req.flash("error", "cannot find that campground!");
+    return res.redirect("/campground");
+  }
   res.render("campgrounds/edit", { camp });
 });
 router.patch("/:id", async (req, res) => {
