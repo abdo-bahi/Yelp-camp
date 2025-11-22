@@ -5,11 +5,7 @@ const ExpressError = require("../utils/ExpressError");
 
 
 
-// this middleware to add a variable that is accessible through all tamplates  ( better use of flashes)
-router.use((req, res, next) => {
-    res.locals.message = req.flash('success');
-    next();
-});
+
 
 // adding the cookies parser to work with cookier
 
@@ -51,7 +47,6 @@ router.post("/", async (req, res, next) => {
   if (!(title && location && image && price && description)) {
     throw new ExpressError("Invalide Attributes", 422);
   }
-  console.log(`title : ${title}\nloacation:${location}`);
   const camp = new CampGround({
     title: title,
     location: location,
@@ -70,7 +65,7 @@ router.get("/new", async (req, res) => {
   });
 router.get("/:id", async (req, res) => {
   const camp = await CampGround.findById(req.params.id).populate("reviews");
-  res.render("campgrounds/show", { camp, message: req.flash("success") });
+  res.render("campgrounds/show", { camp });
 });
 
 router.get("/:id/edit", async (req, res) => {
@@ -82,10 +77,12 @@ router.patch("/:id", async (req, res) => {
   const camp = await CampGround.findById(req.params.id);
   camp.set(req.body);
   await camp.save();
+  req.flash("success", "Successfully updated camp Ground !");
   res.redirect(`/campground/${camp.id}`);
 });
 router.delete("/:id", async (req, res) => {
   await CampGround.findByIdAndDelete(req.params.id);
+  req.flash("success", "Successfully deleted CampGround !");
   res.redirect(`/campground`);
 });
 //*******important

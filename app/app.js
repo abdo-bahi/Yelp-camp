@@ -26,6 +26,7 @@ const session = require("express-session");
 // flash is a way to show an information one time like after creating an object indicating that it was succesfully created
 const flash = require("connect-flash");
 app.use(flash());
+
 const confSession = {
   secret: "thisIsAWeakSecret",
   resave: false,
@@ -38,6 +39,12 @@ const confSession = {
   }
 };
 app.use(session(confSession));
+// this middleware to add a variable that is accessible through all tamplates  ( better use of flashes)
+app.use((req, res, next) => {
+  // <%=message%> will be accesible now from any ejs temlplate
+    res.locals.success = req.flash('success');
+    next();
+});
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -47,6 +54,7 @@ db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", () => {
   console.log("DataBase Connected");
 });
+
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -81,6 +89,7 @@ app.use((req, res, next) => {
 //   console.log('this is the 2nd req midelware');
 //   next();
 // });
+
 app.get("/", (req, res) => {
   res.render("index");
 });
