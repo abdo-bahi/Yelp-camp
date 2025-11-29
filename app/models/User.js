@@ -13,6 +13,7 @@ const UserSchema = new Schema({
 //   }
 });
 //This is going to make the userName and password fields with unique validators ...
+//and add some static methodes like authenticate() , serialize() and deserialize()
 UserSchema.plugin(passportLocalMongoose);
 
 

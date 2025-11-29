@@ -7,9 +7,11 @@ const morgan = require("morgan");
 const ejsMate = require("ejs-mate");
 //const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
+const User = require('./models/User');
 
 const campgroundRoutes = require("./routes/campCrounds");
 const reviewRoutes = require("./routes/reviews");
+const loginRoutes = require("./routes/login");
 //add assets directory here :
 app.use(express.static(path.join(__dirname, "public")));
 // adding the cookies parser to work with cookier
@@ -26,6 +28,7 @@ const session = require("express-session");
 // flash is a way to show an information one time like after creating an object indicating that it was succesfully created
 const flash = require("connect-flash");
 app.use(flash());
+
 
 const confSession = {
   secret: "thisIsAWeakSecret",
@@ -46,6 +49,20 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 });
+//beneath Session
+//setting passport auth and sessions hundling
+const passport = require('passport');
+const localStrategy = require('passport-local');
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+
+//serialisation how to store user in a session
+passport.serializeUser(User.serialize());
+//deserialisation how to unstore user from session
+passport.deserializeUser(User.deserialize());
+
+
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -97,6 +114,7 @@ app.get("/", (req, res) => {
 //replacing the below route with a route created in ./routes/campgrounds.js
 app.use("/campground", campgroundRoutes);
 app.use("/campground/:id/reviews", reviewRoutes);
+app.use("/user", loginRoutes);
 // app.get("/campground", async (req, res) => {
 //   const camps = await CampGround.find({});
 //   res.render("campgrounds/index", { camps });
