@@ -17,6 +17,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // adding the cookies parser to work with cookier
 const cookieParser = require("cookie-parser");
 //app.us the cookieParser while executing it
+const passport = require('passport');
+const localStrategy = require('passport-local');
 app.use(cookieParser("thisIsMySecret"));
 
 //sessions work these are variables corresponding the client strored ( in this case ) on the ''temp memory''
@@ -51,16 +53,15 @@ app.use((req, res, next) => {
 });
 //beneath Session
 //setting passport auth and sessions hundling
-const passport = require('passport');
-const localStrategy = require('passport-local');
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
 
 //serialisation how to store user in a session
-passport.serializeUser(User.serialize());
+passport.serializeUser(User.serializeUser());
 //deserialisation how to unstore user from session
-passport.deserializeUser(User.deserialize());
+passport.deserializeUser(User.deserializeUser());
 
 
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
@@ -114,12 +115,17 @@ app.get("/", (req, res) => {
 //replacing the below route with a route created in ./routes/campgrounds.js
 app.use("/campground", campgroundRoutes);
 app.use("/campground/:id/reviews", reviewRoutes);
-app.use("/user", loginRoutes);
+// app.use("/user", loginRoutes);
 // app.get("/campground", async (req, res) => {
 //   const camps = await CampGround.find({});
 //   res.render("campgrounds/index", { camps });
 // });
-
+app.get('/login', async(req, res) => {
+  //const {email, password} = req.body;
+  const user = new User({email: 'test@ioseeds.dz', username: 'abderrahamne'});
+  const newUser = await User.register(user, 'test@');
+  res.send(newUser);
+});
 //the last next will be used as a 404 wrong path status
 // we dont have to add a midelware with next before it
 app.all("/{*any}", (req, res, next) => {
