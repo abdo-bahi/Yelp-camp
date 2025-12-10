@@ -115,17 +115,17 @@ app.get("/", (req, res) => {
 //replacing the below route with a route created in ./routes/campgrounds.js
 app.use("/campground", campgroundRoutes);
 app.use("/campground/:id/reviews", reviewRoutes);
-// app.use("/user", loginRoutes);
+app.use("/", loginRoutes);
 // app.get("/campground", async (req, res) => {
 //   const camps = await CampGround.find({});
 //   res.render("campgrounds/index", { camps });
 // });
-app.get('/login', async(req, res) => {
-  //const {email, password} = req.body;
-  const user = new User({email: 'test@ioseeds.dz', username: 'abderrahamne'});
-  const newUser = await User.register(user, 'test@');
-  res.send(newUser);
-});
+// app.get('/login', async(req, res) => {
+//   //const {email, password} = req.body;
+//   const user = new User({email: 'test@ioseeds.dz', username: 'abderrahamne'});
+//   const newUser = await User.register(user, 'test@');
+//   res.send(newUser);
+// });
 //the last next will be used as a 404 wrong path status
 // we dont have to add a midelware with next before it
 app.all("/{*any}", (req, res, next) => {

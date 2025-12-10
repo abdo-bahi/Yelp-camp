@@ -4,7 +4,13 @@ const router = express.Router();
 const ExpressError = require("../utils/ExpressError");
 
 
-router.post('/register', async(req, res) => {
-    const {email, password} = req.body;
+router.get('/register', async(req, res) => {
+    res.render('user/register')
 
 });
+router.post('/register', async(req, res) => {
+    res.send(req.body);
+
+});
+
+module.exports = router;
