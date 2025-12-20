@@ -25,10 +25,10 @@ router.get("/login", (req, res) => {
 //options are local, google ...
 router.post(
   "/login",
-  // passport.authenticate("local", {
-  //   failureRedirect: "/login",
-  //   failureFlash: true
-  // }),
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true
+  }),
   (req, res) => {
     req.flash("success", "login success!");
     res.redirect("/campground");
