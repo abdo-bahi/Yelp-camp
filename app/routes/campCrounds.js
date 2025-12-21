@@ -2,7 +2,7 @@ const express = require("express");
 const CampGround = require("../models/CampGround");
 const router = express.Router();
 const ExpressError = require("../utils/ExpressError");
-
+const {isLoggedIn} = require("../middleware")
 // adding the cookies parser to work with cookier
 
 //we can add a router middelware to these routes as in :
@@ -12,7 +12,7 @@ const ExpressError = require("../utils/ExpressError");
 //     }
 //     res.send('sorry , not an admin');
 // });
-router.get("/", async (req, res) => {
+router.get("/", isLoggedIn, async (req, res) => {
   const camps = await CampGround.find({});
   //sending a web cookie to be stored in the client's browser cookies
   res.cookie("name", "Abderrahmane", { signed: true });
@@ -34,7 +34,7 @@ router.get("/", async (req, res) => {
 });
 // flash is a way to show an information one time like after creating an object indicating that it was succesfully created
 
-router.post("/", async (req, res, next) => {
+router.post("/", isLoggedIn, async (req, res, next) => {
   if (!req.body) {
     throw new ExpressError("Invalide Attributes", 422);
   }
@@ -55,10 +55,14 @@ router.post("/", async (req, res, next) => {
   res.redirect(`/campground/${camp._id}`);
 });
 
-router.get("/new", async (req, res) => {
+router.get("/new", isLoggedIn, async (req, res) => {
+  if(!req.isAuthenticated()){
+    req.flash('error', 'you must be signed in !');
+    return res.redirect('/login');
+  }
   res.render("campgrounds/new");
 });
-router.get("/:id", async (req, res) => {
+router.get("/:id", isLoggedIn, async (req, res) => {
   const camp = await CampGround.findById(req.params.id).populate("reviews");
   if (!camp) {
     req.flash("error", "cannot find that campground!");
@@ -67,7 +71,7 @@ router.get("/:id", async (req, res) => {
   res.render("campgrounds/show", { camp });
 });
 
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", isLoggedIn, async (req, res) => {
   const camp = await CampGround.findById(req.params.id);
   if (!camp) {
     req.flash("error", "cannot find that campground!");
@@ -75,7 +79,7 @@ router.get("/:id/edit", async (req, res) => {
   }
   res.render("campgrounds/edit", { camp });
 });
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isLoggedIn, async (req, res) => {
   // const { title, location, image, description } = req.body;
   const camp = await CampGround.findById(req.params.id);
   camp.set(req.body);
@@ -83,7 +87,7 @@ router.patch("/:id", async (req, res) => {
   req.flash("success", "Successfully updated camp Ground !");
   res.redirect(`/campground/${camp.id}`);
 });
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isLoggedIn,  async (req, res) => {
   await CampGround.findByIdAndDelete(req.params.id);
   req.flash("success", "Successfully deleted CampGround !");
   res.redirect(`/campground`);
