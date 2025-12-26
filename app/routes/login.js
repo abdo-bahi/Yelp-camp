@@ -12,8 +12,14 @@ router.post("/register", async (req, res) => {
     const { email, username, password } = req.body;
     const user = new User({ email, username });
     const registeredUser = await User.register(user, password); //hash add salt and store
-    req.flash("success", "New user registered successfuly");
-    res.redirect("/campground");
+
+    req.login(registeredUser, function(err) {
+      if (err) { 
+        req.flash('error', 'can\'t log you In !');
+        return next(err); }
+        req.flash("success", "New user registered successfuly");
+        res.redirect("/campground");
+    });
   } catch (e) {
     req.flash("error", e.message);
     res.redirect("/register");
