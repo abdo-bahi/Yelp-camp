@@ -37,7 +37,10 @@ router.post(
   }),
   (req, res) => {
     req.flash("success", "login success!");
-    res.redirect("/campground");
+    // redirect to previous url then delete it (ux experience)
+    const redirectUrl = req.session.redirectUrl || '/campground';
+    delete req.session.redirectUrl;
+    res.redirect(redirectUrl);
   }
 );
 router.get('/logout',(req, res) => {
