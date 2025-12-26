@@ -34,5 +34,15 @@ router.post(
     res.redirect("/campground");
   }
 );
+router.get('/logout',(req, res) => {
+  //logout with express after passing a callback function
+  req.logout(function(err) {
+    if (err) { 
+      req.flash('error', 'can\'t log you out !');
+      return next(err); }
+    req.flash('success', 'loged you out see you back !');
+    res.redirect('/');
+  });
+});
 
 module.exports = router;
