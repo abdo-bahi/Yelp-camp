@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const ejsMate = require("ejs-mate");
 //const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
-const User = require('./models/User');
+const User = require("./models/User");
 
 const campgroundRoutes = require("./routes/campCrounds");
 const reviewRoutes = require("./routes/reviews");
@@ -17,8 +17,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // adding the cookies parser to work with cookier
 const cookieParser = require("cookie-parser");
 //app.us the cookieParser while executing it
-const passport = require('passport');
-const localStrategy = require('passport-local');
+const passport = require("passport");
+const localStrategy = require("passport-local");
 app.use(cookieParser("thisIsMySecret"));
 
 //sessions work these are variables corresponding the client strored ( in this case ) on the ''temp memory''
@@ -31,26 +31,20 @@ const session = require("express-session");
 const flash = require("connect-flash");
 app.use(flash());
 
-
 const confSession = {
   secret: "thisIsAWeakSecret",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   // store property should be added to store in Db but not neccessery for dev
   cookie: {
     httpOnly: true, //this additional security feature where only valde sourced cookies are accepted
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //for a week (in ms)
     maxAge: 1000 * 60 * 60 * 60 * 24 * 7,
-  }
+  },
 };
 app.use(session(confSession));
 // this middleware to add a variable that is accessible through all tamplates  ( better use of flashes)
-app.use((req, res, next) => {
-  // <%=message%> will be accesible now from any ejs temlplate
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-});
+
 //beneath Session
 //setting passport auth and sessions hundling
 
@@ -62,7 +56,6 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 //deserialisation how to unstore user from session
 passport.deserializeUser(User.deserializeUser());
-
 
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useNewUrlParser: true,
@@ -84,6 +77,15 @@ app.use(methodOverride("_method"));
 //   console.log('this is a req midelware')
 // });
 // this logs incoming request things
+app.use((req, res, next) => {
+  // <%=message%> will be accesible now from any ejs temlplate
+  //this passes the current user to the ejs access
+  console.log('req.user : ', req.user);
+  res.locals.currentUser = req.user;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
 app.use(morgan("tiny"));
 app.use((req, res, next) => {
   console.log("--- DEBUG MIDDLEWARE ---");
