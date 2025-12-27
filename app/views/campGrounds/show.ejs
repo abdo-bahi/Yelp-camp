@@ -15,11 +15,12 @@
         <li class="list-group-item"><%=camp.location%></li>
         <li class="list-group-item">Submited by <b><%=camp.author.username%></b></li>
       </ul>
+      <% if(currentUser && camp.author.equals(currentUser._id)) { %>
       <div class="card-body">
         <a href="/campground/<%=camp._id%>/edit" class="btn btn-primary"
-          >Edit</a
-        >
+          >Edit</a>
       </div>
+      <% } %>
       <div class="card-footer">
        Price : <%= camp.price || 0.00  %> $
       </div>
