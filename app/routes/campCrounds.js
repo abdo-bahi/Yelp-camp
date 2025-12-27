@@ -49,6 +49,7 @@ router.post("/", isLoggedIn, async (req, res, next) => {
     price: price,
     description: description,
   });
+  camp.author = req.user._id;
   await camp.save();
   //   creating the flash entity
   req.flash("success", "Successfully made a camp Ground !");
@@ -63,7 +64,8 @@ router.get("/new", isLoggedIn, async (req, res) => {
   res.render("campgrounds/new");
 });
 router.get("/:id", isLoggedIn, async (req, res) => {
-  const camp = await CampGround.findById(req.params.id).populate("reviews");
+  const camp = await CampGround.findById(req.params.id).populate("reviews").populate("author");
+  console.log('camp : ', camp );
   if (!camp) {
     req.flash("error", "cannot find that campground!");
     return res.redirect("/campground");
