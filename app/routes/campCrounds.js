@@ -79,11 +79,19 @@ router.get("/:id/edit", isLoggedIn, async (req, res) => {
     req.flash("error", "cannot find that campground!");
     return res.redirect("/campground");
   }
+  if(! camp.author.equals(req.user._id)){
+    req.flash('error', 'You do not have permission to do that !');
+    return res.redirect(`/campground/${camp.id}`);
+  }
   res.render("campgrounds/edit", { camp });
 });
 router.patch("/:id", isLoggedIn, async (req, res) => {
   // const { title, location, image, description } = req.body;
   const camp = await CampGround.findById(req.params.id);
+  if(! camp.author.equals(req.user._id)){
+    req.flash('error', 'You do not have permission to do that !');
+    return res.redirect(`/campground/${camp.id}`);
+  }
   camp.set(req.body);
   await camp.save();
   req.flash("success", "Successfully updated camp Ground !");
