@@ -2,6 +2,7 @@ const express = require("express");
 const CampGround = require("../models/CampGround");
 const router = express.Router({mergeParams: true});
 const ExpressError = require("../utils/ExpressError");
+const {validateReview} = require("../middleware");
 
 
 const Review = require("../models/Review");
@@ -9,14 +10,7 @@ const { reviewSchema } = require("../schemas");
 
 //the validateReview from above will check before passing
 //validating the review model before saving it
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-      throw new ExpressError(error.details.message, 400);
-    } else {
-      next();
-    }
-  };
+
 
 router.post("/", validateReview, async (req, res) => {
   const camp = await CampGround.findById(req.params.id);

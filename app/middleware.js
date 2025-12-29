@@ -1,4 +1,6 @@
 const CampGround = require("./models/CampGround");
+const ExpressError = require("./utils/ExpressError");
+const { reviewSchema } = require("./schemas");
 
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -17,4 +19,13 @@ module.exports.isCampAuthor = async (req, res, next) => {
     return res.redirect(`/campground/${camp.id}`);
   }
   next();
+};
+
+module.exports.validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    throw new ExpressError(error.details.message, 400);
+  } else {
+    next();
+  }
 };
