@@ -3,7 +3,7 @@ const CampGround = require("../models/CampGround");
 const router = express.Router({mergeParams: true});
 const ExpressError = require("../utils/ExpressError");
 const {validateReview} = require("../middleware");
-const {isLoggedIn} = require("../middleware")
+const {isLoggedIn, isReviewAuthor} = require("../middleware")
 
 const Review = require("../models/Review");
 const { reviewSchema } = require("../schemas");
@@ -22,7 +22,7 @@ router.post("/", validateReview, isLoggedIn, async (req, res) => {
   req.flash("success", "Successfully added review !");
   res.redirect(`/campground/${camp.id}`);
 });
-router.delete("/:reviewId", async (req, res) => {
+router.delete("/:reviewId", isLoggedIn, isReviewAuthor, async (req, res) => {
   const { id, reviewId } = req.params;
   if (!(id && reviewId)) {
     throw new ExpressError(error.details.message, 400);
