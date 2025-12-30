@@ -3,7 +3,7 @@ const CampGround = require("../models/CampGround");
 const router = express.Router({mergeParams: true});
 const ExpressError = require("../utils/ExpressError");
 const {validateReview} = require("../middleware");
-
+const {isLoggedIn} = require("../middleware")
 
 const Review = require("../models/Review");
 const { reviewSchema } = require("../schemas");
@@ -12,9 +12,10 @@ const { reviewSchema } = require("../schemas");
 //validating the review model before saving it
 
 
-router.post("/", validateReview, async (req, res) => {
+router.post("/", validateReview, isLoggedIn, async (req, res) => {
   const camp = await CampGround.findById(req.params.id);
   const review = new Review(req.body.review);
+  review.author = req.user._id;
   await review.save();
   camp.reviews.push(review);
   await camp.save();

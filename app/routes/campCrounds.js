@@ -64,7 +64,12 @@ router.get("/new", isLoggedIn, async (req, res) => {
   res.render("campgrounds/new");
 });
 router.get("/:id", isLoggedIn, async (req, res) => {
-  const camp = await CampGround.findById(req.params.id).populate("reviews").populate("author");
+  //heres is the 'nested' populate where we must populate reviewsIds to reveiws and thier author for each review 
+  const camp = await CampGround.findById(req.params.id).populate({
+    path:"reviews",
+    populate: {path : "author"}
+  }).populate("author");
+
   console.log('camp : ', camp );
   if (!camp) {
     req.flash("error", "cannot find that campground!");
