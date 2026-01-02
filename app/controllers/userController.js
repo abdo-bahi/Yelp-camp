@@ -29,6 +29,7 @@ module.exports.loginForm = (req, res) => {
   }
 
 module.exports.loginPassport = 
+//options are local, google ...
 passport.authenticate("local", {
   failureRedirect: "/login",
   failureFlash: true

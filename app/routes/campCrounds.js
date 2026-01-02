@@ -2,7 +2,7 @@ const express = require("express");
 const CampGround = require("../models/CampGround");
 const router = express.Router();
 const ExpressError = require("../utils/ExpressError");
-const {isLoggedIn, isCampAuthor} = require("../middleware")
+const { isLoggedIn, isCampAuthor } = require("../middleware");
 const campGroundController = require("../controllers/campgroundController");
 // adding the cookies parser to work with cookier
 
@@ -13,17 +13,28 @@ const campGroundController = require("../controllers/campgroundController");
 //     }
 //     res.send('sorry , not an admin');
 // });
-router.get("/", isLoggedIn, campGroundController.index);
 // flash is a way to show an information one time like after creating an object indicating that it was succesfully created
 
-router.post("/", isLoggedIn, campGroundController.saveNew);
-
+//here we are chaining routes with the same url but defferent request types
+router
+  .route("/")
+  .get(isLoggedIn, campGroundController.index)
+  .post(isLoggedIn, campGroundController.saveNew);
+  
 router.get("/new", isLoggedIn, campGroundController.addForm);
-router.get("/:id", isLoggedIn, campGroundController.getById);
 
-router.get("/:id/edit", isLoggedIn, isCampAuthor, campGroundController.editForm);
-router.patch("/:id", isLoggedIn, isCampAuthor, campGroundController.edit);
-router.delete("/:id", isLoggedIn, isCampAuthor, campGroundController.delete);
+router
+  .route("/:id")
+  .get(isLoggedIn, campGroundController.getById)
+  .patch(isLoggedIn, isCampAuthor, campGroundController.edit)
+  .delete(isLoggedIn, isCampAuthor, campGroundController.delete);
+
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  isCampAuthor,
+  campGroundController.editForm
+);
 //*******important
 // signing cookies isnt about making them a secret it's about
 //ensuring they are the same cookies sent to us in the first place
