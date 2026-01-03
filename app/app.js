@@ -9,11 +9,12 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const User = require("./models/User");
 
+//add assets directory here :
+app.use(express.static(path.join(__dirname, "public")));
 const campgroundRoutes = require("./routes/campCrounds");
 const reviewRoutes = require("./routes/reviews");
 const loginRoutes = require("./routes/login");
-//add assets directory here :
-app.use(express.static(path.join(__dirname, "public")));
+
 // adding the cookies parser to work with cookier
 const cookieParser = require("cookie-parser");
 //app.us the cookieParser while executing it
