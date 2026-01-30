@@ -5,8 +5,10 @@ const ExpressError = require("../utils/ExpressError");
 const { isLoggedIn, isCampAuthor } = require("../middleware");
 const campGroundController = require("../controllers/campgroundController");
 
+const {storage} = require('../cloudinary');
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'})
+const upload = multer({storage});
+
 // adding the cookies parser to work with cookier
 
 //we can add a router middelware to these routes as in :
@@ -22,11 +24,8 @@ const upload = multer({dest: 'uploads/'})
 router
   .route("/")
   .get(isLoggedIn, campGroundController.index)
-//  .post(isLoggedIn, campGroundController.saveNew);
-  .post( upload.single('image'), (req, res) => {
-    console.log(req.body, req.file);
-    res.send(req.body)
-  });  
+ .post(isLoggedIn,upload.array('images'), campGroundController.saveNew);
+ 
 
 router.get("/new", isLoggedIn, campGroundController.addForm);
 

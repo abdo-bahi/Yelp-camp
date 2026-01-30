@@ -24,17 +24,17 @@ module.exports.saveNew = async (req, res, next) => {
   if (!req.body) {
     throw new ExpressError("Invalide Attributes", 422);
   }
-  const { title, location, image, price, description } = req.body;
-  if (!(title && location && image && price && description)) {
+  const { title, location, price, description } = req.body;
+  if (!(title && location && price && description)) {
     throw new ExpressError("Invalide Attributes", 422);
   }
   const camp = new CampGround({
     title: title,
     location: location,
-    image: image,
     price: price,
     description: description,
   });
+  camp.images = req.files.map(f => ({url : f.path, filename:f.filename}));
   camp.author = req.user._id;
   await camp.save();
   //   creating the flash entity
