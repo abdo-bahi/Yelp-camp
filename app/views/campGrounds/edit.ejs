@@ -20,10 +20,7 @@
                 Looks good!
               </div>
           </div>
-          <div class="mb-3">
-            <label for="images" class="form-label"> Add more Images : </label>
-            <input type="file" id="images" name="images" multiple>
-          </div>                
+               
           <div class="mb-3">
             <label for="description" class="form-label">Description </label>
             <input type="text" class="form-control" id="description" value="<%=camp.description%>" name="description" required>
@@ -31,8 +28,17 @@
                 Looks good!
               </div>
           </div>
-    
-          <button class="btn btn-primary mb-2" >Update</button>
+          <div class="mb-3">
+            <label for="images" class="form-label">Add more Images : </label>
+            <input
+              class="form-control"
+              type="file"
+              id="images"
+              name="images"
+              multiple
+            />
+          </div>
+          <button class="btn btn-primary mb-2">Update</button>
     
     </form>
     <form action="/campground/<%=camp._id%>?_method=DELETE" method="POST">
