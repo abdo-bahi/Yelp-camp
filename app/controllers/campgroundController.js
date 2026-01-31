@@ -81,6 +81,9 @@ module.exports.edit = async (req, res) => {
   // const { title, location, image, description } = req.body;
   const camp = await CampGround.findById(req.params.id);
   camp.set(req.body);
+  const imgs = req.files.map(f => ({url : f.path, filename:f.filename}));
+  //here we spread the array into multiple objects for node to accepte it ( we mustnt send an entire array)
+  camp.images.push(...imgs);
   await camp.save();
   req.flash("success", "Successfully updated camp Ground !");
   res.redirect(`/campground/${camp.id}`);

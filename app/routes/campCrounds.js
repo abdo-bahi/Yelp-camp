@@ -32,7 +32,7 @@ router.get("/new", isLoggedIn, campGroundController.addForm);
 router
   .route("/:id")
   .get(isLoggedIn, campGroundController.getById)
-  .patch(isLoggedIn, isCampAuthor, campGroundController.edit)
+  .patch(isLoggedIn, isCampAuthor,upload.array('images') ,campGroundController.edit)
   .delete(isLoggedIn, isCampAuthor, campGroundController.delete);
 
 router.get(
