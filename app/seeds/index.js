@@ -27,7 +27,13 @@ const seedDB = async () => {
     const randomNum = Math.floor(Math.random() * 1000);
     const camp = new CampGround({
       location: `${cities[randomNum].city}, ${cities[randomNum].state}`,
-      image: `${images[randomNum%3]}`, author: '693dbdeb3fffc0a69dfbad75'
+      images: [
+        {
+          url: 'https://res.cloudinary.com/dc6n1s8h4/image/upload/v1769858549/YelpCamp/kaxn3cotrhnq9y3e4xrf.jpg',
+          filename: 'YelpCamp/kaxn3cotrhnq9y3e4xrf',
+        }
+      ]
+      , author: '693dbdeb3fffc0a69dfbad75'
       , title: `The ${cities[randomNum].state}'s ${type[randomNum%3]}`
     });
     await camp.save();
