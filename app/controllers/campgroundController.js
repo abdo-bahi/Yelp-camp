@@ -1,3 +1,4 @@
+const { cloudinary } = require("../cloudinary");
 const CampGround = require("../models/CampGround");
 
 module.exports.index = async (req, res) => {
@@ -85,6 +86,13 @@ module.exports.edit = async (req, res) => {
   //here we spread the array into multiple objects for node to accepte it ( we mustnt send an entire array)
   camp.images.push(...imgs);
   await camp.save();
+  if (req.body.deleteImages) {
+    for (let filename of req.body.deleteImages) {
+      await cloudinary.uploader.destroy(filename);
+    }
+    await camp.updateOne({$pull: {images:{filename:{$in: req.body.deleteImages}}}});
+  }
+  console.log("here/////", req.body.deleteImages);
   req.flash("success", "Successfully updated camp Ground !");
   res.redirect(`/campground/${camp.id}`);
 };

@@ -38,6 +38,24 @@
               multiple
             />
           </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Select To delete</th>
+                <th scope="col">Image</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% camp.images.forEach((image, i) => { %>
+                <tr>
+                  <td><input type="checkbox" class="form-check-input"
+                    name="deleteImages[]" id="image-<%=i%>" value="<%=image.filename%>"></td>
+                  <td><img class="d-block w-100" src="<%=image.url%>"  alt="" /></td>
+                </tr>
+                  <% }) %>
+
+            </tbody>
+          </table>
           <button class="btn btn-primary mb-2">Update</button>
     
     </form>
