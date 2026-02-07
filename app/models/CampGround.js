@@ -17,6 +17,8 @@ const CampGoundSchema = new Schema({
   price: Number,
   description: String,
   location: String,
+  longitude: Number,
+  latitude: Number,
   author: { type: Schema.Types.ObjectId, ref: "User" },
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 });

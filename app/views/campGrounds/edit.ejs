@@ -4,7 +4,7 @@
     <h1 class="text-center">Edit Campground : <%=camp.title%></h1>
 </div>
 
-<div class="col-6 offset-3">
+<div class="col-6 offset-3 mb-3">
     <form action="/campground/<%=camp._id%>?_method=PATCH" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -20,7 +20,32 @@
                 Looks good!
               </div>
           </div>
-               
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="longitude" class="form-label">Longitude</label>
+              <input
+                type="text"
+                class="form-control"
+                id="longitude"
+                name="longitude"
+                value="<%=camp.longitude%>"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+                 <div class="col-6">
+              <label for="latitude" class="form-label">Latitude</label>
+              <input
+                type="text"
+                class="form-control"
+                id="latitude"
+                name="latitude"
+                value="<%=camp.latitude%>"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+          </div> 
           <div class="mb-3">
             <label for="description" class="form-label">Description </label>
             <input type="text" class="form-control" id="description" value="<%=camp.description%>" name="description" required>

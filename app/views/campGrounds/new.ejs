@@ -3,7 +3,7 @@
 <div class="row">
   <h1 class="text-center">Add New Campground :</h1>
 </div>
-<div class="col-6 offset-3">
+<div class="col-6 offset-3 mb-3">
   <form
     action="/campground"
     method="POST"
@@ -34,6 +34,31 @@
       />
       <div class="valid-feedback">Looks good!</div>
     </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="longitude" class="form-label">Longitude</label>
+        <input
+          type="text"
+          class="form-control"
+          id="longitude"
+          name="longitude"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+           <div class="col-6">
+        <label for="latitude" class="form-label">Latitude</label>
+        <input
+          type="text"
+          class="form-control"
+          id="latitude"
+          name="latitude"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+    </div>   
+ 
 
     <!-- 
               <div class="mb-3">
