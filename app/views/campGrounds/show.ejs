@@ -137,6 +137,7 @@ Array.prototype.slice.call(forms)
 })()
 </script>
 <script>
+    var campTitle = '<%- camp.title %>';
     const longitude = '<%- camp.longitude %>';
     const latitude = '<%- camp.latitude %>';
   document.addEventListener("DOMContentLoaded", function () {
@@ -147,7 +148,7 @@ Array.prototype.slice.call(forms)
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    L.marker([longitude, latitude]).addTo(map);
+    L.marker([longitude, latitude]).bindPopup(campTitle).openPopup().addTo(map);
 
   });
 </script>

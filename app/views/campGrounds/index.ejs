@@ -7,7 +7,9 @@
 <div class="card" mb-3>
   <div class="row g-2">
     <div class="col-4">
-      <img src="<%=camp.images[0].url%>" class="img-fluid" alt="" />
+      <% if(camp.images[0]) { %> 
+              <img src="<%=camp.images[0].url%>" class="img-fluid" alt="" />
+      <% } %>
     </div>
     <div class="col-6">
       <div class="card-body">
