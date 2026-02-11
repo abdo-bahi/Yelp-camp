@@ -1,6 +1,10 @@
 <% layout("layouts/boilerplate")%>
 <div><h1>Hi <%=name%>  this is your <%=sessionCount%> e time visiting us check out these Campgrounds :</h1></div>
 
+<div class="row" >  
+  <div id="map" class="col-8 mb-3"></div>
+</div>
+
 <%for(let camp of camps){%>
   <div class="row g-2">
     <div class="col-10">
@@ -23,3 +27,26 @@
 </div>
 </div>
 <%}%>
+
+<script>
+var camps = <%- JSON.stringify(camps) %>;
+document.addEventListener("DOMContentLoaded", function () {
+
+  const map = L.map('map').setView([36.428293, 2.883504], 10);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  var markers = new L.MarkerClusterGroup();
+  //const campChrea = camps[50];
+  markers.addLayer(L.marker([36.428293, 2.883504]));
+// camps.forEach(camp => {
+
+//   markers.addLayer(L.marker([camp.latitude, camp.longitude]));
+// });
+
+map.addLayer(markers);
+});
+console.log(camps);
+</script>
