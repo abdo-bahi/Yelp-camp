@@ -34,19 +34,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const map = L.map('map').setView([36.428293, 2.883504], 10);
 
+
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
-
+  // L.marker([36.428293, 2.883504]).addTo(map);
   var markers = new L.MarkerClusterGroup();
-  //const campChrea = camps[50];
-  markers.addLayer(L.marker([36.428293, 2.883504]));
-// camps.forEach(camp => {
+  // const campChrea = camps[50];
+  // markers.addLayer(L.marker([36.428293, 2.883504]));
+camps.forEach(camp => {
+  if (camp.longitude && camp.latitude) {
+      markers.addLayer(L.marker([camp.longitude, camp.latitude]));
+  }
+ });
 
-//   markers.addLayer(L.marker([camp.latitude, camp.longitude]));
-// });
+//  markers.addLayer(L.marker([campChrea.longitude, campChrea.latitude]));
 
 map.addLayer(markers);
-});
+ });
+
 console.log(camps);
+
 </script>
