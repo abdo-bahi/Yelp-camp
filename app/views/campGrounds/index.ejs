@@ -32,7 +32,7 @@
 var camps = <%- JSON.stringify(camps) %>;
 document.addEventListener("DOMContentLoaded", function () {
 
-  const map = L.map('map').setView([36.428293, 2.883504], 10);
+  const map = L.map('map').setView([40.66995747, -103.59179687498357], 3.5);
 
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -44,7 +44,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // markers.addLayer(L.marker([36.428293, 2.883504]));
 camps.forEach(camp => {
   if (camp.longitude && camp.latitude) {
-      markers.addLayer(L.marker([camp.longitude, camp.latitude]));
+      const marker = L.marker([camp.latitude, camp.longitude]);
+    marker.bindPopup(`
+    <div>
+      <h6>${camp.title}</h6>
+      <p>${camp.location}</p>
+      <a href="/campground/${camp._id}">View Camp</a>
+    </div>
+  `);
+    markers.addLayer(marker);
   }
  });
 

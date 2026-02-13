@@ -35,6 +35,8 @@ const seedDB = async () => {
       ]
       , author: '693dbdeb3fffc0a69dfbad75'
       , title: `The ${cities[randomNum].state}'s ${type[randomNum%3]}`
+      , longitude: cities[randomNum].longitude
+      , latitude: cities[randomNum].latitude
     });
     await camp.save();
   }
