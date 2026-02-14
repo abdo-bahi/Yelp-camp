@@ -3,9 +3,6 @@
 <link rel="stylesheet" type="text/css" href="/css/stars.css">
 
 
-<div class="row" >  
-  <div id="map" class="col-8 mb-3"></div>
-</div>
 
 
 <div class="row">
@@ -54,7 +51,13 @@
       </div>
 
   </div>
+
   <div class="col-4 mr-1">
+    <div class="row" >  
+      <div id="map" ></div>
+    </div>
+    
+<div class="row">
     <h5 class="mt-2">Reviews :</h5>
 
       <form action="/campground/<%=camp._id%>/reviews" method="POST" novalidate class="validated-form">
@@ -114,6 +117,7 @@
 
 </div>
 </div>
+</div>
 <script>
   // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function () {
@@ -134,21 +138,21 @@ Array.prototype.slice.call(forms)
     form.classList.add('was-validated')
   }, false)
 })
-})()
+})
 </script>
 <script>
-    var campTitle = '<%- camp.title %>';
-    const longitude = '<%- camp.longitude %>';
-    const latitude = '<%- camp.latitude %>';
+    var camp =  <%- JSON.stringify(camp) %>;
+    // const longitude = -122.4194155;
+    // const latitude = 37.7749295;
   document.addEventListener("DOMContentLoaded", function () {
 
-    const map = L.map('map').setView([longitude, latitude], 13);
+    const map = L.map('map').setView([camp.latitude,camp.longitude], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    L.marker([longitude, latitude]).bindPopup(campTitle).openPopup().addTo(map);
+    L.marker([camp.latitude,camp.longitude]).bindPopup(camp.title).openPopup().addTo(map);
 
   });
 </script>
