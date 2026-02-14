@@ -12,6 +12,7 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const User = require("./models/User");
 
+const mongoSanitize =  require("express-mongo-sanitize");
 //add assets directory here :
 app.use(express.static(path.join(__dirname, "public")));
 const campgroundRoutes = require("./routes/campCrounds");
@@ -98,6 +99,14 @@ app.use((req, res, next) => {
   console.log("Body:", req.body);
   next();
 });
+//****************  mongo injection ************ */
+
+//this package prohibite special 
+//chars that are used in querying or manipulating inside the app as preventing mongo injection by ignoring input data containging special mongo query chars
+
+// app.use(mongoSanitize());
+
+//****************  mongo injection ************ */
 
 // midelware chaining we'll have this is 1st then this is 2nd then ****
 // but the chaining will be broken once a express.response is sent from one midellware
