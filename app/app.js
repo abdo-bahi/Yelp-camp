@@ -12,6 +12,8 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const User = require("./models/User");
 
+//this helmet is a headers protection middleware( more security mesures)
+const helmet = require('helmet');
 const mongoSanitize =  require("express-mongo-sanitize");
 //add assets directory here :
 app.use(express.static(path.join(__dirname, "public")));
@@ -37,12 +39,14 @@ const flash = require("connect-flash");
 app.use(flash());
 
 const confSession = {
+  name:'campSession',
   secret: "thisIsAWeakSecret",
   resave: false,
   saveUninitialized: false,
   // store property should be added to store in Db but not neccessery for dev
   cookie: {
     httpOnly: true, //this additional security feature where only valde sourced cookies are accepted
+    // secure: true, this obligates coming reqs to be in https
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //for a week (in ms)
     maxAge: 1000 * 60 * 60 * 60 * 24 * 7,
   },
@@ -77,6 +81,13 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+//helmet setting with all 11 headers protector middleware while desabling contentpolicy for now
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  }),
+);
+
 // all requests will trigger this one
 // app.use(() => {
 //   console.log('this is a req midelware')
