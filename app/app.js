@@ -81,11 +81,56 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-//helmet setting with all 11 headers protector middleware while desabling contentpolicy for now
+//helmet setting with all 11 headers protector middleware while desabling
+
+app.use(helmet());
+// here we are setting helmlet content security policy 
 app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  }),
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.jsdelivr.net",
+        "https://unpkg.com"
+      ],
+
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.jsdelivr.net",
+        "https://unpkg.com",
+        "https://fonts.googleapis.com"
+      ],
+
+      imgSrc: [
+        "'self'",
+        "data:",
+        "blob:",
+        "https://tile.openstreetmap.org",
+        "https://*.tile.openstreetmap.org",
+        "https://res.cloudinary.com",
+        "https://images.unsplash.com",
+        "https://unpkg.com"
+      ],
+
+      fontSrc: [
+        "'self'",
+        "https://fonts.gstatic.com",
+        "https://cdn.jsdelivr.net"
+      ],
+
+      connectSrc: [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://unpkg.com"
+      ],
+
+      objectSrc: [],
+    },
+  })
 );
 
 // all requests will trigger this one
