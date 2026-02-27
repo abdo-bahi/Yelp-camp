@@ -11,6 +11,7 @@ const ejsMate = require("ejs-mate");
 //const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const User = require("./models/User");
+const dbUrl = process.env.DB_URL;
 
 //this helmet is a headers protection middleware( more security mesures)
 const helmet = require('helmet');
@@ -65,10 +66,13 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 //deserialisation how to unstore user from session
 passport.deserializeUser(User.deserializeUser());
-
-mongoose.connect("mongodb://localhost:27017/yelp-camp", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+//
+mongoose.connect(dbUrl)
+.then(() => {
+  console.log("MongoDB connected");
+})
+.catch(err => {
+  console.log("connection error:", err);
 });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
