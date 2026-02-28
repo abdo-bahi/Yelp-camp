@@ -98,7 +98,8 @@ app.use(
         "'self'",
         "'unsafe-inline'",
         "https://cdn.jsdelivr.net",
-        "https://unpkg.com"
+        "https://unpkg.com",
+        "https://stackpath.bootstrapcdn.com"
       ],
 
       styleSrc: [
@@ -106,7 +107,8 @@ app.use(
         "'unsafe-inline'",
         "https://cdn.jsdelivr.net",
         "https://unpkg.com",
-        "https://fonts.googleapis.com"
+        "https://fonts.googleapis.com",
+        "https://stackpath.bootstrapcdn.com"
       ],
 
       imgSrc: [
@@ -117,13 +119,15 @@ app.use(
         "https://*.tile.openstreetmap.org",
         "https://res.cloudinary.com",
         "https://images.unsplash.com",
-        "https://unpkg.com"
+        "https://unpkg.com",
+        "https://stackpath.bootstrapcdn.com"
       ],
 
       fontSrc: [
         "'self'",
         "https://fonts.gstatic.com",
-        "https://cdn.jsdelivr.net"
+        "https://cdn.jsdelivr.net",
+        "https://stackpath.bootstrapcdn.com"
       ],
 
       connectSrc: [
