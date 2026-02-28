@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== "production") {
-  require('dotenv').config();
+  require("dotenv").config();
 }
 const express = require("express");
 const app = express();
@@ -14,8 +14,8 @@ const User = require("./models/User");
 const dbUrl = process.env.DB_URL;
 
 //this helmet is a headers protection middleware( more security mesures)
-const helmet = require('helmet');
-const mongoSanitize =  require("express-mongo-sanitize");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
 //add assets directory here :
 app.use(express.static(path.join(__dirname, "public")));
 const campgroundRoutes = require("./routes/campCrounds");
@@ -32,6 +32,33 @@ app.use(cookieParser("thisIsMySecret"));
 //sessions work these are variables corresponding the client strored ( in this case ) on the ''temp memory''
 //where in the client he will only save his sessionID in (connect.sid) variable
 const session = require("express-session");
+//this is session storing on db lib
+const { MongoStore } = require("connect-mongo");
+
+app.use(
+  session({
+    store: MongoStore.create({ mongoUrl: dbUrl }),
+  })
+);
+const confSession = {
+  name: "campSession",
+  secret: "thisIsAWeakSecret",
+  resave: false,
+  saveUninitialized: false,
+  // store property should be added to store in Db but not neccessery for dev
+  store: MongoStore.create({
+    mongoUrl: dbUrl,
+    secret: "thisIsAWeakSecret",
+    touchAfter: 24 * 3600, // time period in seconds
+  }),
+  cookie: {
+    httpOnly: true, //this additional security feature where only valde sourced cookies are accepted
+    // secure: true, this obligates coming reqs to be in https
+    //expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //for a week (in ms)
+    //maxAge: 1000 * 60 * 60 * 60 * 24 * 7,
+  },
+};
+
 //resave is to force resaving the sessions variables
 //saveUninitialized is to force resaving the sessions variables
 
@@ -39,19 +66,6 @@ const session = require("express-session");
 const flash = require("connect-flash");
 app.use(flash());
 
-const confSession = {
-  name:'campSession',
-  secret: "thisIsAWeakSecret",
-  resave: false,
-  saveUninitialized: false,
-  // store property should be added to store in Db but not neccessery for dev
-  cookie: {
-    httpOnly: true, //this additional security feature where only valde sourced cookies are accepted
-    // secure: true, this obligates coming reqs to be in https
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //for a week (in ms)
-    maxAge: 1000 * 60 * 60 * 60 * 24 * 7,
-  },
-};
 app.use(session(confSession));
 // this middleware to add a variable that is accessible through all tamplates  ( better use of flashes)
 
@@ -66,14 +80,15 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 //deserialisation how to unstore user from session
 passport.deserializeUser(User.deserializeUser());
-//
-mongoose.connect(dbUrl)
-.then(() => {
-  console.log("MongoDB connected");
-})
-.catch(err => {
-  console.log("connection error:", err);
-});
+
+mongoose
+  .connect(dbUrl)
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => {
+    console.log("connection error:", err);
+  });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", () => {
@@ -88,7 +103,7 @@ app.use(methodOverride("_method"));
 //helmet setting with all 11 headers protector middleware while desabling
 
 app.use(helmet());
-// here we are setting helmlet content security policy 
+// here we are setting helmlet content security policy
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -99,7 +114,7 @@ app.use(
         "'unsafe-inline'",
         "https://cdn.jsdelivr.net",
         "https://unpkg.com",
-        "https://stackpath.bootstrapcdn.com"
+        "https://stackpath.bootstrapcdn.com",
       ],
 
       styleSrc: [
@@ -108,7 +123,7 @@ app.use(
         "https://cdn.jsdelivr.net",
         "https://unpkg.com",
         "https://fonts.googleapis.com",
-        "https://stackpath.bootstrapcdn.com"
+        "https://stackpath.bootstrapcdn.com",
       ],
 
       imgSrc: [
@@ -120,21 +135,17 @@ app.use(
         "https://res.cloudinary.com",
         "https://images.unsplash.com",
         "https://unpkg.com",
-        "https://stackpath.bootstrapcdn.com"
+        "https://stackpath.bootstrapcdn.com",
       ],
 
       fontSrc: [
         "'self'",
         "https://fonts.gstatic.com",
         "https://cdn.jsdelivr.net",
-        "https://stackpath.bootstrapcdn.com"
+        "https://stackpath.bootstrapcdn.com",
       ],
 
-      connectSrc: [
-        "'self'",
-        "https://cdn.jsdelivr.net",
-        "https://unpkg.com"
-      ],
+      connectSrc: ["'self'", "https://cdn.jsdelivr.net", "https://unpkg.com"],
 
       objectSrc: [],
     },
@@ -149,7 +160,7 @@ app.use(
 app.use((req, res, next) => {
   // <%=message%> will be accesible now from any ejs temlplate
   //this passes the current user to the ejs access
-  console.log('req.user : ', req.user);
+  console.log("req.user : ", req.user);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
@@ -165,7 +176,7 @@ app.use((req, res, next) => {
 });
 //****************  mongo injection ************ */
 
-//this package prohibite special 
+//this package prohibite special
 //chars that are used in querying or manipulating inside the app as preventing mongo injection by ignoring input data containging special mongo query chars
 
 // app.use(mongoSanitize());
