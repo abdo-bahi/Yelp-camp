@@ -13,4 +13,56 @@ _it is a full-stack web application for consulting and managing a list of campgr
 - MongoDB (connected and managed through the Mongoose module)
 
 
-**Installation Guide:**
+# YelpCamp Installation Guide
+Access deployed version on vercel :
+
+[MyCampsApp](https://mycamp-5nu1fkm0d-abdobahibahibahi-6501s-projects.vercel.app/)
+
+# YelpCamp Installation Guide
+
+This guide explains how to install and run the project on another machine.
+
+---
+
+## 1. Clone the Repository
+
+First, clone the repository from GitHub:
+
+```bash
+git clone https://github.com/abdo-bahi/Yelp-camp.git
+
+Navigate into the project directory:
+
+cd yelpcamp
+2. Install Dependencies
+
+Install all required packages listed in package.json:
+
+npm install
+
+This command will automatically download and install all dependencies into the node_modules folder.
+
+3. Configure Environment Variables
+
+Create a .env file in the root directory of the project.
+
+Example:
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_KEY=your_key
+CLOUDINARY_SECRET=your_secret
+DB_URL=mongodb://127.0.0.1:27017/yelp-camp
+
+These variables are required for services like image storage and database connection.
+
+4. Start the Application
+
+Run the server using:
+nodemon app.js 
+or
+node app.js
+5. Open the Application
+
+Once the server is running, open your browser and go to:
+
+http://localhost:3000
