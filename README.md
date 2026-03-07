@@ -18,6 +18,22 @@ Access deployed version on vercel :
 
 [MyCampsApp](https://mycamp-5nu1fkm0d-abdobahibahibahi-6501s-projects.vercel.app/)
 
+# Application Screenshots: 
+
+## Home Page
+
+<img width="1360" height="768" alt="Capture d’écran (16)" src="https://github.com/user-attachments/assets/734286f6-cce3-43ac-b2e8-3e887a82ca8a" />
+
+## Campground list with map
+
+<img width="1360" height="768" alt="Capture d’écran (19)" src="https://github.com/user-attachments/assets/a287af49-cb5a-4e48-9225-a2694ddf0404" />
+
+## Explore Campground with users preview & Rating
+
+<img width="1360" height="768" alt="Capture d’écran (21)" src="https://github.com/user-attachments/assets/78fa40d1-0cff-47ac-9a69-52ef098f87e5" />
+
+
+
 # YelpCamp Installation Guide
 
 This guide explains how to install and run the project on another machine.
